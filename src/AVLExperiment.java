@@ -7,23 +7,68 @@ import java.util.List;
 public class AVLExperiment {
 
     public static void main(String[] args) {
-        CSVFileReader fileReader = new CSVFileReader("vaccinations.csv");
-        List<List<String>> dataList = fileReader.getData();
-        StringBuffer stringBuffer = new StringBuffer();
-
-        // Randomise list
-        Collections.shuffle(dataList);
+        String result = run(Integer.parseInt(args[0]));
 
         try {
-            File file = new File("experiment-results.txt");
+            File file = new File("results.txt");
             PrintWriter outputStream = new PrintWriter(file);
-            for (String line : stringBuffer.toString().split("\n")) {
-                outputStream.println(line);
-            }
+            outputStream.print(result);
             outputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+    }
+
+    public static String run(int degree) {
+        CSVFileReader fileReader = new CSVFileReader("vaccinations.csv");
+        List<List<String>> dataList = randomiseList(fileReader.getData(), degree);
+
+        VaccineAVL vaccineAVL = new VaccineAVL();
+        ExperimentStats avlInsertionStats = new ExperimentStats();
+        ExperimentStats avlSearchStats = new ExperimentStats();
+
+        for (List<String> list : dataList) {
+            int insertions = vaccineAVL.insert(new VaccinationEntry(list));
+            avlInsertionStats.record(insertions);
+        }
+
+        for (List<String> list : dataList) {
+            int comparisons = vaccineAVL.findComparisons(list.get(0), list.get(1));
+            avlSearchStats.record(comparisons);
+        }
+
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append(String.format("Insert: %s%n", avlInsertionStats.toString()));
+        stringBuffer.append(String.format("Find: %s%n", avlSearchStats.toString()));
+        stringBuffer.append("\n");
+
+        return stringBuffer.toString();
+    }
+
+    /**
+     * Randomise the datalist to the given degrere
+     *
+     * @param dataList the list to randomise
+     * @param degree   the extent to which the data should be randomised. If degree
+     *                 is less than 0, a value of 0 is used. If the degree is
+     *                 greater than 100 a value of 100 is used. I.e 0<= degree <=
+     *                 100
+     * @return A randomised list
+     */
+    public static List<List<String>> randomiseList(List<List<String>> dataList, int degree) {
+        int randomisation = degree;
+        if (randomisation > 100) {
+            randomisation = 100;
+        }
+
+        int endIndex = randomisation > 0 ? dataList.size() / (100 / randomisation) : 0;
+
+        List<List<String>> shufledSubList = dataList.subList(0, endIndex);
+        Collections.shuffle(shufledSubList);
+        List<List<String>> restOfList = dataList.subList(endIndex, dataList.size());
+
+        shufledSubList.addAll(restOfList);
+        return shufledSubList;
     }
 }
