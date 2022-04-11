@@ -1,2 +1,3 @@
-bin/**
-experiment-data.txt
+bin
+doc
+*results.txt

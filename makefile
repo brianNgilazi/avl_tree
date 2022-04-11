@@ -45,7 +45,8 @@ $(BINDIR)/%.class:$(SRCDIR)/%.java
 
 CLASSES= BTQueueNode.class BTQueue.class \
 		 BinaryTreeNode.class BinaryTree.class \
-         AVLTree.class AVLTreeTest.class CSVFileReader.class VaccineEntry.class VaccineAVL.class ExperimentStats.class Experiment.class
+         AVLTree.class AVLTreeTest.class CSVFileReader.class \
+		 VaccinationEntry.class VaccineAVL.class AVLExperiment.class ExperimentStats.class Experiment.class
 
 CLASS_FILES=$(CLASSES:%.class=$(BINDIR)/%.class)
 
@@ -76,12 +77,8 @@ classes: $(CLASSES:.java=.class)
 clean:
 	rm  -r $(BINDIR)/*.class $(DOCDIR)/*
 
-VaccineBSTApp: $(CLASS_FILES)
-	java -cp bin VaccineBSTApp
-
-VaccineaArrayApp: $(CLASS_FILES)
-	java -cp bin VaccineArrayApp
-
+AVLExperiment: $(CLASS_FILES)
+	java -cp bin AVLExperiment
 
 docs: $(CLASS_FILES)
 	$(JAVADOC) -d $(DOCDIR) $(SRCDIR)/*
