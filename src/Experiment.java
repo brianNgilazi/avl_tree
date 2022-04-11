@@ -12,7 +12,7 @@ public class Experiment {
         for (int i = 1; i <= 20; i++) {
             String[] a = new String[1];
             a[0] = Integer.toString(i * 5);
-            stringBuffer.append(String.format("Randomisation: %d%n", i*5));
+            // stringBuffer.append(String.format("Randomisation: %d%n", i*5));
             stringBuffer.append(AVLExperiment.run(i * 5));
         }
 

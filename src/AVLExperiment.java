@@ -20,6 +20,11 @@ public class AVLExperiment {
 
     }
 
+    /**
+     * Run the AVL exeriment
+     * @param degree the degree of randomization
+     * @return A string with the results of the experiment (to be output or written to a file)
+     */
     public static String run(int degree) {
         CSVFileReader fileReader = new CSVFileReader("vaccinations.csv");
         List<List<String>> dataList = randomiseList(fileReader.getData(), degree);
@@ -40,7 +45,8 @@ public class AVLExperiment {
 
         StringBuffer stringBuffer = new StringBuffer();
         stringBuffer.append(String.format("Insert: %s%n", avlInsertionStats.toString()));
-        stringBuffer.append(String.format("Find: %s%n", avlSearchStats.toString()));
+
+        stringBuffer.append(String.format("Search: %s%n", avlSearchStats.toString()));
         stringBuffer.append("\n");
 
         return stringBuffer.toString();
