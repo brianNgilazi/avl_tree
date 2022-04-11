@@ -45,7 +45,7 @@ $(BINDIR)/%.class:$(SRCDIR)/%.java
 
 CLASSES= BTQueueNode.class BTQueue.class \
 		 BinaryTreeNode.class BinaryTree.class \
-         AVLTree.class AVLTreeTest.class CSVFileReader.class ExperimentStats.class Experiment.class
+         AVLTree.class AVLTreeTest.class CSVFileReader.class VaccineEntry.class VaccineAVL.class ExperimentStats.class Experiment.class
 
 CLASS_FILES=$(CLASSES:%.class=$(BINDIR)/%.class)
 
