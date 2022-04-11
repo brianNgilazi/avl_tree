@@ -14,30 +14,25 @@ public class Experiment {
         List<List<String>> dataList = fileReader.getData();
         StringBuffer stringBuffer = new StringBuffer();
 
-        // Randomise list
-        Collections.shuffle(dataList);
-        for (int n = 900; n <= 9000; n += 900) {
-            stringBuffer.append(String.format("n = %d%n", n));
-            List<List<String>> list = dataList.subList(0, n);
-            ExperimentStats bstStats = new ExperimentStats();
-            ExperimentStats arrayStats = new ExperimentStats();
-            for (List<String> dList : list) {
-                String country = dList.get(0);
-                String date = dList.get(1);
-                int bstComparisons = bst.findComparisons(country, date);
-                bstStats.record(bstComparisons);
-                int arrayComparisons = array.findComparisons(country, date);
-                arrayStats.record(arrayComparisons);
-            }
-            ;
-            stringBuffer.append(String.format("Array Search: %s%n", arrayStats.toString()));
-            stringBuffer.append(String.format("BST Search: %s%n", bstStats.toString()));
-            stringBuffer.append("\n");
-
+        int randomisation = 50;
+        if (randomisation > 100) {
+            randomisation = 100;
         }
+        if (randomisation < 0) {
+            randomisation = 0;
+        }
+        int endIndex = dataList.size() / (100 / randomisation);
 
+        List<List<String>> shufledSubList = dataList.subList(0, endIndex);
+        Collections.shuffle(shufledSubList);
+        List<List<String>> restOfList = dataList.subList(endIndex, dataList.size());
+
+        shufledSubList.addAll(restOfList);
+        for (List<String> list : shufledSubList) {
+            stringBuffer.append(list.toString()).append("\n");
+        }
         try {
-            File file = new File("experiment-results.txt");
+            File file = new File("experiment-data.txt");
             PrintWriter outputStream = new PrintWriter(file);
             for (String line : stringBuffer.toString().split("\n")) {
                 outputStream.println(line);
