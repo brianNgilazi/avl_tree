@@ -43,10 +43,9 @@ $(BINDIR)/%.class:$(SRCDIR)/%.java
 # CLASSES is a macro consisting of 4 words (one for each java source file)
 #
 
-CLASSES= BTQueueNode.class BTQueue.class \
-		 BinaryTreeNode.class BinaryTree.class \
-         AVLTree.class AVLTreeTest.class CSVFileReader.class \
-		 VaccinationEntry.class VaccineAVL.class AVLExperiment.class ExperimentStats.class Experiment.class
+CLASSES= BinaryTreeNode.class BTQueueNode.class BTQueue.class BinaryTree.class \
+         AVLTree.class AVLTreeTest.class BinarySearchTree.class CSVFileReader.class \
+		 VaccinationEntry.class VaccineAVL.class VaccineBST.class  ExperimentStats.class AVLExperiment.class Experiment.class
 
 CLASS_FILES=$(CLASSES:%.class=$(BINDIR)/%.class)
 
@@ -77,8 +76,6 @@ classes: $(CLASSES:.java=.class)
 clean:
 	rm  -r $(BINDIR)/*.class $(DOCDIR)/*
 
-AVLExperiment: $(CLASS_FILES)
-	java -cp bin AVLExperiment
 
 docs: $(CLASS_FILES)
 	$(JAVADOC) -d $(DOCDIR) $(SRCDIR)/*

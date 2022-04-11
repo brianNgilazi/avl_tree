@@ -22,16 +22,21 @@ public class AVLExperiment {
 
     /**
      * Run the AVL exeriment
+     *
      * @param degree the degree of randomization
-     * @return A string with the results of the experiment (to be output or written to a file)
+     * @return A string with the results of the experiment (to be output or written
+     *         to a file)
      */
     public static String run(int degree) {
         CSVFileReader fileReader = new CSVFileReader("vaccinations.csv");
         List<List<String>> dataList = randomiseList(fileReader.getData(), degree);
 
         VaccineAVL vaccineAVL = new VaccineAVL();
+        VaccineBST vaccineBST = new VaccineBST(dataList);
+
         ExperimentStats avlInsertionStats = new ExperimentStats();
         ExperimentStats avlSearchStats = new ExperimentStats();
+        ExperimentStats bstStats = new ExperimentStats();
 
         for (List<String> list : dataList) {
             int insertions = vaccineAVL.insert(new VaccinationEntry(list));
@@ -41,12 +46,19 @@ public class AVLExperiment {
         for (List<String> list : dataList) {
             int comparisons = vaccineAVL.findComparisons(list.get(0), list.get(1));
             avlSearchStats.record(comparisons);
+            comparisons = vaccineBST.findComparisons(list.get(0), list.get(1));
+            bstStats.record(comparisons);
         }
 
         StringBuffer stringBuffer = new StringBuffer();
-        stringBuffer.append(String.format("Insert: %s%n", avlInsertionStats.toString()));
+        stringBuffer.append(String.format("AVL Insert: %s%n",
+        avlInsertionStats.toString()));
 
-        stringBuffer.append(String.format("Search: %s%n", avlSearchStats.toString()));
+        stringBuffer.append(String.format("AVL Search: %s%n",
+        avlSearchStats.toString()));
+        stringBuffer.append(String.format("BST Search: %s%n",
+        bstStats.toString()));
+
         stringBuffer.append("\n");
 
         return stringBuffer.toString();
@@ -58,7 +70,7 @@ public class AVLExperiment {
      * @param dataList the list to randomise
      * @param degree   the extent to which the data should be randomised. If degree
      *                 is less than 0, a value of 0 is used. If the degree is
-     *                 greater than 100 a value of 100 is used. I.e 0<= degree <=
+     *                 greater than 100 a value of 100 is used. I.e `0<= degree <=`
      *                 100
      * @return A randomised list
      */
